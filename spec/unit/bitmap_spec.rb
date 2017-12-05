@@ -2,7 +2,7 @@ require 'bitmap'
 
 RSpec.describe Bitmap do
 
-  subject { described_class.new(width, height) }
+  subject { described_class.new(width: width, height: height) }
 
   let(:width) { 3 }
   let(:height) { 4 }
@@ -31,7 +31,7 @@ RSpec.describe Bitmap do
         ]
       end
 
-      subject { described_class.new(width, height, 'A') }
+      subject { described_class.new(width: width, height: height, color: 'A') }
 
       it 'sets all colors to A with override' do
         subject
@@ -51,7 +51,7 @@ RSpec.describe Bitmap do
     end
 
     it 'colors pixel' do
-      subject.color_pixel(3, 4, 'X')
+      subject.color_pixel(x: '3', y: '4', color: 'X')
       expect(subject.image).to eq(expected_image)
     end
   end
@@ -67,7 +67,7 @@ RSpec.describe Bitmap do
     end
 
     it 'draws vertical line' do
-      subject.draw_vertical_line(2, 1, 3, 'X')
+      subject.draw_vertical_line(x: '2', from_y: '1', to_y: '3', color: 'X')
       expect(subject.image).to eq(expected_image)
     end
   end
@@ -83,7 +83,7 @@ RSpec.describe Bitmap do
     end
 
     it 'draws horizontal line' do
-      subject.draw_horizontal_line(1, 3, 2, 'X')
+      subject.draw_horizontal_line(from_x: '1', to_x: '3', y: '2', color: 'X')
       expect(subject.image).to eq(expected_image)
     end
   end
@@ -99,12 +99,12 @@ RSpec.describe Bitmap do
     end
 
     it 'sets all colors to O' do
-      subject.draw_horizontal_line(1, 3, 2, 'X')
+      subject.draw_horizontal_line(from_x: '1', to_x: '3', y: '2', color: 'X')
       subject.clear_image
       expect(subject.image).to eq(expected_image)
     end
   end
-  
+
   describe '#draw_image' do
     let(:expected_image) do
       'OOO\n'\
