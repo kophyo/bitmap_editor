@@ -21,6 +21,15 @@ RSpec.describe BitmapRunner do
         expect(Bitmap).to receive(:new).with(width: '3', height: '5')
         subject.run
       end
+
+      context 'passing invalid commands' do
+        let(:commands) { ['I A B'] }
+        it 'shows a error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'I A B'. Skipping...")
+          subject.run
+        end
+      end
     end
 
     context 'for L command' do
@@ -34,6 +43,15 @@ RSpec.describe BitmapRunner do
         expect(bitmap).to receive(:color_pixel)
           .with(x: '3', y: '5', color: 'P')
         subject.run
+      end
+
+      context 'passing invalid commands' do
+        let(:commands) { ['L A B C'] }
+        it 'shows a error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'L A B C'. Skipping...")
+          subject.run
+        end
       end
     end
 
@@ -62,6 +80,15 @@ RSpec.describe BitmapRunner do
           .with(x: '3', from_y: '1', to_y: '5', color: 'P')
         subject.run
       end
+
+      context 'passing invalid commands' do
+        let(:commands) { ['V A B C D'] }
+        it 'shows a error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'V A B C D'. Skipping...")
+          subject.run
+        end
+      end
     end
 
     context 'for H command' do
@@ -76,6 +103,15 @@ RSpec.describe BitmapRunner do
           .with(from_x: '2', to_x: '4', y: '3', color: 'K')
         subject.run
       end
+
+      context 'passing invalid commands' do
+        let(:commands) { ['H A B C D'] }
+        it 'shows a error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'H A B C D'. Skipping...")
+          subject.run
+        end
+      end
     end
 
     context 'for S command' do
@@ -87,6 +123,15 @@ RSpec.describe BitmapRunner do
 
       it 'runs Bitmap command' do
         expect(bitmap).to receive(:draw_image)
+        subject.run
+      end
+    end
+
+    context 'passing invalid commands' do
+      let(:commands) { ['X'] }
+      it 'shows a error message' do
+        expect(STDOUT).to receive(:puts)
+          .with("Invalid Command: 'X'. Skipping...")
         subject.run
       end
     end

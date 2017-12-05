@@ -1,4 +1,4 @@
-require 'bitmap_runner'
+require_relative 'bitmap_runner'
 
 class BitmapEditor
   def run(file)
