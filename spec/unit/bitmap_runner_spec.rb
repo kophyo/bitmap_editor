@@ -26,19 +26,18 @@ RSpec.describe BitmapRunner do
         let(:commands) { ['I A B'] }
         it 'shows a error message' do
           expect(STDOUT).to receive(:puts)
-            .with("Invalid Command: 'I A B'. Skipping...")
+            .with("Invalid Command: 'I A B'. Command discarded.")
           subject.run
         end
       end
     end
 
     context 'for L command' do
-      let(:commands) { ['L 3 5 P'] }
+      let(:commands) { ['I 5 5', 'L 3 5 P'] }
 
       before do
-        subject.instance_variable_set('@bitmap', bitmap)
+        allow(Bitmap).to receive(:new) { bitmap }
       end
-
       it 'runs Bitmap command' do
         expect(bitmap).to receive(:color_pixel)
           .with(x: '3', y: '5', color: 'P')
@@ -49,17 +48,17 @@ RSpec.describe BitmapRunner do
         let(:commands) { ['L A B C'] }
         it 'shows a error message' do
           expect(STDOUT).to receive(:puts)
-            .with("Invalid Command: 'L A B C'. Skipping...")
+            .with("Invalid Command: 'L A B C'. Command discarded.")
           subject.run
         end
       end
     end
 
     context 'for C command' do
-      let(:commands) { ['C'] }
+      let(:commands) { ['I 5 5', 'C'] }
 
       before do
-        subject.instance_variable_set('@bitmap', bitmap)
+        allow(Bitmap).to receive(:new) { bitmap }
       end
 
       it 'runs Bitmap command' do
@@ -69,10 +68,10 @@ RSpec.describe BitmapRunner do
     end
 
     context 'for V command' do
-      let(:commands) { ['V 3 1 5 P'] }
+      let(:commands) { ['I 5 5', 'V 3 1 5 P'] }
 
       before do
-        subject.instance_variable_set('@bitmap', bitmap)
+        allow(Bitmap).to receive(:new) { bitmap }
       end
 
       it 'runs Bitmap command' do
@@ -85,17 +84,17 @@ RSpec.describe BitmapRunner do
         let(:commands) { ['V A B C D'] }
         it 'shows a error message' do
           expect(STDOUT).to receive(:puts)
-            .with("Invalid Command: 'V A B C D'. Skipping...")
+            .with("Invalid Command: 'V A B C D'. Command discarded.")
           subject.run
         end
       end
     end
 
     context 'for H command' do
-      let(:commands) { ['H 2 4 3 K'] }
+      let(:commands) { ['I 5 5', 'H 2 4 3 K'] }
 
       before do
-        subject.instance_variable_set('@bitmap', bitmap)
+        allow(Bitmap).to receive(:new) { bitmap }
       end
 
       it 'runs Bitmap command' do
@@ -108,17 +107,17 @@ RSpec.describe BitmapRunner do
         let(:commands) { ['H A B C D'] }
         it 'shows a error message' do
           expect(STDOUT).to receive(:puts)
-            .with("Invalid Command: 'H A B C D'. Skipping...")
+            .with("Invalid Command: 'H A B C D'. Command discarded.")
           subject.run
         end
       end
     end
 
     context 'for S command' do
-      let(:commands) { ['S'] }
+      let(:commands) { ['I 5 5', 'S'] }
 
       before do
-        subject.instance_variable_set('@bitmap', bitmap)
+        allow(Bitmap).to receive(:new) { bitmap }
       end
 
       it 'runs Bitmap command' do
@@ -131,8 +130,56 @@ RSpec.describe BitmapRunner do
       let(:commands) { ['X'] }
       it 'shows a error message' do
         expect(STDOUT).to receive(:puts)
-          .with("Invalid Command: 'X'. Skipping...")
+          .with("Invalid Command: 'X'. Command discarded.")
         subject.run
+      end
+    end
+
+    context 'running any command without initializing bitmap' do
+
+      context 'for L command' do
+        let(:commands) { ['L 3 5 A'] }
+        it 'shows no bitmap error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'L 3 5 A'. Bitmap not initialized with 'I' yet!")
+          subject.run
+        end
+      end
+
+      context 'for C command' do
+        let(:commands) { ['C'] }
+        it 'shows no bitmap error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'C'. Bitmap not initialized with 'I' yet!")
+          subject.run
+        end
+      end
+
+      context 'for V command' do
+        let(:commands) { ['V 3 3 5 K'] }
+        it 'shows no bitmap error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'V 3 3 5 K'. Bitmap not initialized with 'I' yet!")
+          subject.run
+        end
+      end
+
+      context 'for H command' do
+        let(:commands) { ['H 3 3 5 K'] }
+        it 'shows no bitmap error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'H 3 3 5 K'. Bitmap not initialized with 'I' yet!")
+          subject.run
+        end
+      end
+
+      context 'for S command' do
+        let(:commands) { ['S'] }
+        it 'shows no bitmap error message' do
+          expect(STDOUT).to receive(:puts)
+            .with("Invalid Command: 'S'. Bitmap not initialized with 'I' yet!")
+          subject.run
+        end
       end
     end
   end
