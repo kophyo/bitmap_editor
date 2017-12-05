@@ -4,7 +4,7 @@ class Bitmap
   attr_reader :image
   def initialize(width, height, color = DEFAULT_COLOR)
     @width, @height, @color = width, height, color
-    @image = Array.new(@height) { Array.new(@width, @color)}
+    initialize_pixels(@color)
   end
 
   def color_pixel(x, y, color)
@@ -25,5 +25,15 @@ class Bitmap
 
   def draw_image
     @image.map{ |row| row.join('') }.join('\n')
+  end
+
+  def clear_image
+    initialize_pixels(DEFAULT_COLOR)
+  end
+
+  private
+
+  def initialize_pixels(color)
+    @image = Array.new(@height) { Array.new(@width, color)}
   end
 end

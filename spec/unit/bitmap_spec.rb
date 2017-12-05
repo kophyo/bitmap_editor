@@ -66,7 +66,7 @@ RSpec.describe Bitmap do
       ]
     end
 
-    it 'colors pixel' do
+    it 'draws vertical line' do
       subject.draw_vertical_line(2, 1, 3, 'X')
       expect(subject.image).to eq(expected_image)
     end
@@ -82,12 +82,29 @@ RSpec.describe Bitmap do
       ]
     end
 
-    it 'colors pixel' do
+    it 'draws horizontal line' do
       subject.draw_horizontal_line(1, 3, 2, 'X')
       expect(subject.image).to eq(expected_image)
     end
   end
 
+  describe '#clear_image' do
+    let(:expected_image) do
+      [
+        %w(O O O),
+        %w(O O O),
+        %w(O O O),
+        %w(O O O)
+      ]
+    end
+
+    it 'sets all colors to O' do
+      subject.draw_horizontal_line(1, 3, 2, 'X')
+      subject.clear_image
+      expect(subject.image).to eq(expected_image)
+    end
+  end
+  
   describe '#draw_image' do
     let(:expected_image) do
       'OOO\n'\
